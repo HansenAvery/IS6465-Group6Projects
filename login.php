@@ -6,7 +6,6 @@ if (is_logged_in()) { redirect('index.php'); }
 const MAX_ATTEMPTS = 5;
 const LOCK_SECONDS = 60;
 
-$users = require __DIR__ . '/includes/users.php';
 $error = '';
 $email = '';
 
@@ -21,12 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($email === '' || $password === '') {
         $error = 'Enter your email and password.';
     } else {
-        $user = $users[$email] ?? null;
+        $st = db()->prepare('SELECT id, name, password_hash FROM users WHERE email = ?');
+        $st->execute([$email]);
+        $user = $st->fetch() ?: null;
         // Verify against a dummy hash when the user is unknown so timing doesn't reveal valid emails.
-        $hash = $user['hash'] ?? '$2y$10$usesomesillystringforsaltuQ0Qm0oQ3bq7mQmP1c8y6y1o4y8Z2e';
+        $hash = $user['password_hash'] ?? '$2y$10$usesomesillystringforsaltuQ0Qm0oQ3bq7mQmP1c8y6y1o4y8Z2e';
         if (password_verify($password, $hash) && $user) {
             session_regenerate_id(true);               // prevent session fixation
-            $_SESSION['user'] = ['email' => $email, 'name' => $user['name']];
+            $_SESSION['user'] = ['id' => (int)$user['id'], 'email' => $email, 'name' => $user['name']];
             unset($_SESSION['attempts'], $_SESSION['lock_until']);
             redirect('index.php');
         }

@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 session_set_cookie_params(['httponly' => true, 'samesite' => 'Lax']);
 session_start();
+require_once __DIR__ . '/db.php';
 
-const LOCATIONS = [
-    'A' => ['name' => 'Parking Location A', 'address' => '123 Main St, Denver, CO 80202',   'rate' => 3.00, 'x' => 24, 'y' => 62],
-    'B' => ['name' => 'Parking Location B', 'address' => '456 Market St, Denver, CO 80203', 'rate' => 5.00, 'x' => 61, 'y' => 44],
-    'C' => ['name' => 'Parking Location C', 'address' => '789 Colfax Ave, Denver, CO 80204', 'rate' => 2.00, 'x' => 83, 'y' => 82],
-];
 const DURATIONS = [
     '0.5' => '30 minutes', '1' => '1 hour', '2' => '2 hours', '3' => '3 hours',
     '4' => '4 hours', '8' => '8 hours', '24' => 'All day (24 hours)',
@@ -65,6 +61,8 @@ function page_header(string $title, string $active = '', bool $showNav = true): 
        . ($showNav ? '<nav class="main-nav" aria-label="Main">'
        . $nav('bookings', 'bookings.php', 'My Bookings')
        . $nav('find', 'index.php', 'Find Parking')
+       . $nav('locations', 'locations.php', 'Locations')
+       . $nav('users', 'users.php', 'Users')
        . $nav('notifications', 'notifications.php', 'Notifications' . ($unread ? ' <span class="badge">' . $unread . '</span>' : ''))
        . '<span class="avatar" role="img" aria-label="Account"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg></span>'
        . '<form method="post" action="logout.php" class="logout-form">' . csrf_field()

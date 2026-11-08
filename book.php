@@ -3,11 +3,11 @@ require __DIR__ . '/includes/functions.php';
 require_login();
 
 // Entering via Reserve link starts a draft for that location
-if (isset($_GET['loc']) && isset(LOCATIONS[$_GET['loc']])) {
-    $_SESSION['draft'] = ['loc' => $_GET['loc'], 'date' => '', 'time' => '', 'duration' => ''];
+if (isset($_GET['loc']) && isset(locations()[$_GET['loc']])) {
+    $_SESSION['draft'] = ['loc' => (string)$_GET['loc'], 'date' => '', 'time' => '', 'duration' => ''];
     redirect('book.php');
 }
-$d = $_SESSION['draft'] ?? ['loc' => 'A', 'date' => '', 'time' => '', 'duration' => ''];
+$d = $_SESSION['draft'] ?? ['loc' => (string)(array_key_first(locations()) ?? ''), 'date' => '', 'time' => '', 'duration' => ''];
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'time'     => (string)($_POST['time'] ?? ''),
         'duration' => (string)($_POST['duration'] ?? ''),
     ];
-    if (!isset(LOCATIONS[$d['loc']])) { $errors['loc'] = 'Please choose a parking location.'; }
+    if (!isset(locations()[$d['loc']])) { $errors['loc'] = 'Please choose a parking location.'; }
 
     $dt = DateTime::createFromFormat('Y-m-d', $d['date']);
     if (!$dt || $dt->format('Y-m-d') !== $d['date']) { $errors['date'] = 'Please choose a valid booking date.'; }
@@ -50,8 +50,8 @@ $cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
     <div class="form-row">
       <label class="field-label" for="bLoc">Select Parking Location</label>
       <select id="bLoc" name="loc"<?= $cls('loc') ?>>
-        <?php foreach (LOCATIONS as $id => $l): ?>
-          <option value="<?= e($id) ?>"<?= $d['loc'] === $id ? ' selected' : '' ?>><?= e($l['name']) ?> — <?= money($l['rate']) ?>/hr</option>
+        <?php foreach (locations() as $id => $l): ?>
+          <option value="<?= e($id) ?>"<?= (string)$d['loc'] === (string)$id ? ' selected' : '' ?>><?= e($l['name']) ?> — <?= money($l['rate']) ?>/hr</option>
         <?php endforeach; ?>
       </select>
       <?= $err('loc') ?>
