@@ -2,6 +2,7 @@
 
 Requires PHP 8.0+ with the pdo_sqlite extension (no Composer). Users and parking locations are stored in
 data/smartpark.sqlite, created and seeded automatically on first run. Bookings/notifications live in the session.
+The interface uses Bootstrap 5.3.3 from jsDelivr, so pages need an internet connection to load the framework assets.
 
     cd smartpark-php
     php -S localhost:8000 router.php

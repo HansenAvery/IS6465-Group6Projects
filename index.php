@@ -24,16 +24,16 @@ page_header('Find Parking', 'find');
 <h1>Available Parking</h1>
 <p class="sub">Enter a location to see parking locations and available spaces</p>
 
-<form class="search-row" method="get" action="index.php" role="search">
-  <div class="field">
-    <label class="lbl" for="loc">Location</label>
-    <input id="loc" type="search" name="q" placeholder="Enter an address, city, or zip code" value="<?= e($q) ?>" autocomplete="off">
+<form class="row g-3 align-items-end mb-4" method="get" action="index.php" role="search">
+  <div class="col">
+    <label class="form-label" for="loc">Location</label>
+    <input id="loc" class="form-control" type="search" name="q" placeholder="Enter an address, city, or zip code" value="<?= e($q) ?>" autocomplete="off">
   </div>
-  <button class="btn-rect" type="submit">Search Availability</button>
+  <div class="col-auto"><button class="btn btn-primary" type="submit">Search Availability</button></div>
 </form>
 
-<div class="two-col">
-  <section aria-labelledby="mapH">
+<div class="row g-4">
+  <section class="col-lg-6" aria-labelledby="mapH">
     <h2 id="mapH" style="margin-bottom:12px">Parking Map</h2>
     <div class="map">
       <span class="chip">Search area</span>
@@ -50,7 +50,7 @@ page_header('Find Parking', 'find');
     </div>
   </section>
 
-  <section aria-labelledby="listH">
+  <section class="col-lg-6" aria-labelledby="listH">
     <div class="list-head">
       <h2 id="listH">Available Parking</h2>
       <span class="found"><?= $count ?> location<?= $count === 1 ? '' : 's' ?> found</span>
@@ -59,11 +59,11 @@ page_header('Find Parking', 'find');
       <div class="empty">No parking found for “<?= e($q) ?>”. Try another address, city, or zip code.</div>
     <?php endif; ?>
     <?php foreach ($results as $id => $l): ?>
-      <div class="card<?= $selected === $id ? ' selected' : '' ?>">
+      <div class="card parking-card rounded shadow-sm<?= $selected === $id ? ' selected' : '' ?>">
         <div>
           <div class="name"><?= e($l['name']) ?></div>
           <div class="addr"><?= e($l['address']) ?></div>
-          <a class="btn-sm" href="book.php?loc=<?= e($id) ?>" aria-label="Reserve <?= e($l['name']) ?>">Reserve</a>
+          <a class="btn btn-outline-primary btn-sm" href="book.php?loc=<?= e($id) ?>" aria-label="Reserve <?= e($l['name']) ?>">Reserve</a>
         </div>
         <div class="price"><?= number_format($l['rate'], 2) ?> / HR</div>
       </div>

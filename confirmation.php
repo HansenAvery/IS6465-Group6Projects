@@ -20,7 +20,7 @@ page_header('Reservation Received', 'find');
 ?>
 <div class="confirm">
   <h1>We have received your reservation!</h1>
-  <div class="receipt"><dl>
+  <div class="card receipt shadow-sm"><dl>
     <dt>Booking #</dt><dd><?= e($booking['id']) ?></dd>
     <dt>Location</dt><dd><?= e($booking['locName']) ?></dd>
     <dt>Date</dt><dd><?= fmt_date($booking['date']) ?></dd>
@@ -31,8 +31,8 @@ page_header('Reservation Received', 'find');
   </dl></div>
   <form method="post" action="confirmation.php" class="actions" style="margin-top:0">
     <?= csrf_field() ?>
-    <a class="btn" href="index.php">Return to Home</a>
-    <button class="btn alt" type="submit">Confirm</button>
+    <a class="btn btn-outline-secondary" href="index.php">Return to Home</a>
+    <button class="btn btn-primary" type="submit">Confirm</button>
   </form>
 </div>
 <?php page_footer();

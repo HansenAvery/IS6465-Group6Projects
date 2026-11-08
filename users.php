@@ -21,23 +21,24 @@ $users = db()->query('SELECT id, name, email, phone, created_at FROM users ORDER
 page_header('Users', 'users');
 ?>
 <div class="page-top"><div><h1>Users</h1><p class="sub">View, add, update and delete user accounts</p></div>
-  <a class="btn-rect" href="user_form.php">Add User</a></div>
-<table class="data-table">
+  <a class="btn btn-primary" href="user_form.php">Add User</a></div>
+<div class="table-responsive bg-white rounded shadow-sm">
+<table class="table table-striped table-hover align-middle data-table mb-0">
   <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Created</th><th><span class="sr-only">Actions</span></th></tr></thead>
   <tbody>
   <?php if (!$users): ?><tr><td colspan="5" class="empty">No users yet.</td></tr><?php endif; ?>
   <?php foreach ($users as $u): $self = (int)$u['id'] === (int)$_SESSION['user']['id']; ?>
     <tr>
-      <td><?= e($u['name']) ?><?= $self ? ' <span class="status">You</span>' : '' ?></td>
+      <td><?= e($u['name']) ?><?= $self ? ' <span class="badge text-bg-secondary">You</span>' : '' ?></td>
       <td><?= e($u['email']) ?></td>
       <td><?= e($u['phone'] ?: '—') ?></td>
       <td><?= e(date('M j, Y', strtotime($u['created_at']))) ?></td>
       <td class="row-actions">
-        <a class="btn-sm" href="user_form.php?id=<?= (int)$u['id'] ?>" aria-label="Edit <?= e($u['name']) ?>">Edit</a>
+        <a class="btn btn-outline-primary btn-sm" href="user_form.php?id=<?= (int)$u['id'] ?>" aria-label="Edit <?= e($u['name']) ?>">Edit</a>
         <?php if (!$self): ?>
         <form method="post" action="users.php" onsubmit="return confirm('Delete <?= e(addslashes($u['name'])) ?>? This cannot be undone.');">
           <?= csrf_field() ?><input type="hidden" name="delete" value="<?= (int)$u['id'] ?>">
-          <button class="btn-sm danger" type="submit" aria-label="Delete <?= e($u['name']) ?>">Delete</button>
+          <button class="btn btn-outline-danger btn-sm" type="submit" aria-label="Delete <?= e($u['name']) ?>">Delete</button>
         </form>
         <?php endif; ?>
       </td>
@@ -45,4 +46,5 @@ page_header('Users', 'users');
   <?php endforeach; ?>
   </tbody>
 </table>
+</div>
 <?php page_footer();

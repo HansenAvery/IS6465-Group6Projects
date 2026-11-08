@@ -17,8 +17,9 @@ $locs = locations();
 page_header('Parking Locations', 'locations');
 ?>
 <div class="page-top"><div><h1>Parking Locations</h1><p class="sub">View, add, update and delete the locations drivers can reserve</p></div>
-  <a class="btn-rect" href="location_form.php">Add Location</a></div>
-<table class="data-table">
+  <a class="btn btn-primary" href="location_form.php">Add Location</a></div>
+<div class="table-responsive bg-white rounded shadow-sm">
+<table class="table table-striped table-hover align-middle data-table mb-0">
   <thead><tr><th>Name</th><th>Address</th><th>Rate</th><th>Map position</th><th><span class="sr-only">Actions</span></th></tr></thead>
   <tbody>
   <?php if (!$locs): ?><tr><td colspan="5" class="empty">No parking locations yet. Add one so drivers can reserve it.</td></tr><?php endif; ?>
@@ -29,14 +30,15 @@ page_header('Parking Locations', 'locations');
       <td><?= money($l['rate']) ?> / HR</td>
       <td><?= $l['x'] ?>%, <?= $l['y'] ?>%</td>
       <td class="row-actions">
-        <a class="btn-sm" href="location_form.php?id=<?= $id ?>" aria-label="Edit <?= e($l['name']) ?>">Edit</a>
+        <a class="btn btn-outline-primary btn-sm" href="location_form.php?id=<?= $id ?>" aria-label="Edit <?= e($l['name']) ?>">Edit</a>
         <form method="post" action="locations.php" onsubmit="return confirm('Delete <?= e(addslashes($l['name'])) ?>? This cannot be undone.');">
           <?= csrf_field() ?><input type="hidden" name="delete" value="<?= $id ?>">
-          <button class="btn-sm danger" type="submit" aria-label="Delete <?= e($l['name']) ?>">Delete</button>
+          <button class="btn btn-outline-danger btn-sm" type="submit" aria-label="Delete <?= e($l['name']) ?>">Delete</button>
         </form>
       </td>
     </tr>
   <?php endforeach; ?>
   </tbody>
 </table>
+</div>
 <?php page_footer();

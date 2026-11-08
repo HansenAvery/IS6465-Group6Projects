@@ -58,8 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 page_header('Payment', 'find');
 $arrow = '<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3l16 9-16 9z"/></svg>';
-$err = fn(string $k) => isset($errors[$k]) ? '<div class="error" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
-$cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
+$err = fn(string $k) => isset($errors[$k]) ? '<div class="error invalid-feedback d-block" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
+$cls = fn(string $k) => isset($errors[$k]) ? ' is-invalid' : '';
 ?>
 <div class="pay-head">
   <div><h1>Reserve Your Parking Spot</h1><p class="sub">Please select your payment method</p></div>
@@ -71,39 +71,39 @@ $cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
   <?= csrf_field() ?>
   <input type="hidden" name="method" value="<?= e($method) ?>">
 
-  <a class="accordion-head" href="payment.php?method=wallet" aria-expanded="<?= $method === 'wallet' ? 'true' : 'false' ?>"><?= $arrow ?><span class="title">Mobile Wallet</span></a>
+  <a class="accordion-head btn btn-light border" href="payment.php?method=wallet" aria-expanded="<?= $method === 'wallet' ? 'true' : 'false' ?>"><?= $arrow ?><span class="title">Mobile Wallet</span></a>
   <?php if ($method === 'wallet'): ?>
     <div class="accordion-body">
       <div class="wallets" role="radiogroup" aria-label="Mobile wallet">
-        <label class="wallet"><input type="radio" name="wallet" value="Apple Pay" <?= $in['wallet'] === 'Apple Pay' ? 'checked' : '' ?>> Apple Pay</label>
-        <label class="wallet"><input type="radio" name="wallet" value="Google Pay" <?= $in['wallet'] === 'Google Pay' ? 'checked' : '' ?>> Google Pay</label>
+        <label class="wallet"><input class="form-check-input" type="radio" name="wallet" value="Apple Pay" <?= $in['wallet'] === 'Apple Pay' ? 'checked' : '' ?>> Apple Pay</label>
+        <label class="wallet"><input class="form-check-input" type="radio" name="wallet" value="Google Pay" <?= $in['wallet'] === 'Google Pay' ? 'checked' : '' ?>> Google Pay</label>
       </div>
     </div>
   <?php endif; ?>
 
-  <a class="accordion-head" href="payment.php?method=card" aria-expanded="<?= $method === 'card' ? 'true' : 'false' ?>"><?= $arrow ?><span class="title">Credit/Debit</span></a>
+  <a class="accordion-head btn btn-light border" href="payment.php?method=card" aria-expanded="<?= $method === 'card' ? 'true' : 'false' ?>"><?= $arrow ?><span class="title">Credit/Debit</span></a>
   <?php if ($method === 'card'): ?>
     <div class="accordion-body">
       <h2 style="text-align:center;margin:8px 0 12px">Payment Details</h2>
       <div class="form-row">
-        <label class="field-label" for="cName">Name On Card</label>
-        <input id="cName" type="text" name="name" placeholder="Enter Name" autocomplete="cc-name" maxlength="80" value="<?= e($in['name']) ?>"<?= $cls('name') ?>>
+        <label class="form-label" for="cName">Name On Card</label>
+        <input id="cName" class="form-control<?= $cls('name') ?>" type="text" name="name" placeholder="Enter Name" autocomplete="cc-name" maxlength="80" value="<?= e($in['name']) ?>">
         <?= $err('name') ?>
       </div>
       <div class="form-row">
-        <label class="field-label" for="cNum">Card Number</label>
-        <input id="cNum" type="text" name="number" inputmode="numeric" placeholder="Enter card number" autocomplete="cc-number" maxlength="23" value="<?= e($in['number']) ?>"<?= $cls('number') ?>>
+        <label class="form-label" for="cNum">Card Number</label>
+        <input id="cNum" class="form-control<?= $cls('number') ?>" type="text" name="number" inputmode="numeric" placeholder="Enter card number" autocomplete="cc-number" maxlength="23" value="<?= e($in['number']) ?>">
         <?= $err('number') ?>
       </div>
-      <div class="form-grid">
-        <div class="form-row">
-          <label class="field-label" for="cExp">Expiration Date</label>
-          <input id="cExp" type="text" name="exp" inputmode="numeric" placeholder="MM / YY" autocomplete="cc-exp" maxlength="7" value="<?= e($in['exp']) ?>"<?= $cls('exp') ?>>
+      <div class="row g-3">
+        <div class="form-row col-md-6">
+          <label class="form-label" for="cExp">Expiration Date</label>
+          <input id="cExp" class="form-control<?= $cls('exp') ?>" type="text" name="exp" inputmode="numeric" placeholder="MM / YY" autocomplete="cc-exp" maxlength="7" value="<?= e($in['exp']) ?>">
           <?= $err('exp') ?>
         </div>
-        <div class="form-row">
-          <label class="field-label" for="cCvv">Security Code</label>
-          <input id="cCvv" type="password" name="cvv" inputmode="numeric" placeholder="CVV" autocomplete="cc-csc" maxlength="4"<?= $cls('cvv') ?>>
+        <div class="form-row col-md-6">
+          <label class="form-label" for="cCvv">Security Code</label>
+          <input id="cCvv" class="form-control<?= $cls('cvv') ?>" type="password" name="cvv" inputmode="numeric" placeholder="CVV" autocomplete="cc-csc" maxlength="4">
           <?= $err('cvv') ?>
         </div>
       </div>
@@ -111,8 +111,8 @@ $cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
   <?php endif; ?>
 
   <div class="actions">
-    <a class="btn" href="book.php">Cancel</a>
-    <button class="btn alt" type="submit">Confirm</button>
+    <a class="btn btn-outline-secondary" href="book.php">Cancel</a>
+    <button class="btn btn-primary" type="submit">Confirm</button>
   </div>
 </form>
 <?php page_footer();

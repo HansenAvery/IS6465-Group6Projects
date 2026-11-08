@@ -45,19 +45,19 @@ page_header('Log in', '', false);
 <div class="login-wrap">
   <h1>Log in to SmartPark</h1>
   <p class="sub">Sign in to find and reserve parking</p>
-  <form method="post" action="login.php" class="panel" novalidate>
+  <form method="post" action="login.php" class="card border-0 shadow-sm p-4" novalidate>
     <?= csrf_field() ?>
-    <h2>Sign In</h2>
-    <?php if ($error): ?><div class="form-error" role="alert"><?= e($error) ?></div><?php endif; ?>
+    <h2 class="card-title text-center mb-3">Sign In</h2>
+    <?php if ($error): ?><div class="alert alert-danger" role="alert"><?= e($error) ?></div><?php endif; ?>
     <div class="form-row">
-      <label class="field-label" for="email">Email</label>
-      <input id="email" type="text" name="email" inputmode="email" autocomplete="username" value="<?= e($email) ?>" autofocus<?= $error ? ' class="invalid"' : '' ?>>
+      <label class="form-label" for="email">Email</label>
+      <input id="email" class="form-control<?= $error ? ' is-invalid' : '' ?>" type="text" name="email" inputmode="email" autocomplete="username" value="<?= e($email) ?>" autofocus>
     </div>
     <div class="form-row">
-      <label class="field-label" for="password">Password</label>
-      <input id="password" type="password" name="password" autocomplete="current-password"<?= $error ? ' class="invalid"' : '' ?>>
+      <label class="form-label" for="password">Password</label>
+      <input id="password" class="form-control<?= $error ? ' is-invalid' : '' ?>" type="password" name="password" autocomplete="current-password">
     </div>
-    <div class="actions" style="margin-top:8px"><button class="btn alt" type="submit">Log In</button></div>
+    <div class="actions mt-2"><button class="btn btn-primary" type="submit">Log In</button></div>
   </form>
   <p class="demo-note">Demo account: <code>demo@smartpark.com</code> / <code>Park1234!</code></p>
 </div>

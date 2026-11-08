@@ -42,30 +42,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$err = fn(string $k) => isset($errors[$k]) ? '<div class="error" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
-$cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
+$err = fn(string $k) => isset($errors[$k]) ? '<div class="error invalid-feedback d-block" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
+$cls = fn(string $k) => isset($errors[$k]) ? ' is-invalid' : '';
 page_header($editing ? 'Update Location' : 'Add Location', 'locations');
 ?>
 <h1><?= $editing ? 'Update Parking Location' : 'Add Parking Location' ?></h1>
 <p class="sub">Map position places the pin on the Find Parking map (0% is the left/top edge, 100% the right/bottom edge).</p>
 <form method="post" action="location_form.php<?= $editing ? '?id=' . $id : '' ?>" novalidate>
   <?= csrf_field() ?>
-  <div class="panel">
-    <h2>Location Details</h2>
-    <div class="form-row"><label class="field-label" for="name">Name</label>
-      <input id="name" name="name" type="text" maxlength="80" value="<?= e($row['name']) ?>"<?= $cls('name') ?>><?= $err('name') ?></div>
-    <div class="form-row"><label class="field-label" for="address">Address</label>
-      <input id="address" name="address" type="text" maxlength="120" value="<?= e($row['address']) ?>"<?= $cls('address') ?>><?= $err('address') ?></div>
-    <div class="form-row"><label class="field-label" for="rate">Rate per hour ($)</label>
-      <input id="rate" name="rate" type="text" inputmode="decimal" value="<?= e($row['rate']) ?>"<?= $cls('rate') ?>><?= $err('rate') ?></div>
-    <div class="form-grid">
-      <div class="form-row"><label class="field-label" for="map_x">Map position – left (%)</label>
-        <input id="map_x" name="map_x" type="text" inputmode="numeric" value="<?= e($row['map_x']) ?>"<?= $cls('map_x') ?>><?= $err('map_x') ?></div>
-      <div class="form-row"><label class="field-label" for="map_y">Map position – top (%)</label>
-        <input id="map_y" name="map_y" type="text" inputmode="numeric" value="<?= e($row['map_y']) ?>"<?= $cls('map_y') ?>><?= $err('map_y') ?></div>
+  <div class="card border-0 shadow-sm p-3 p-md-4">
+    <h2 class="card-title mb-3">Location Details</h2>
+    <div class="form-row"><label class="form-label" for="name">Name</label>
+      <input id="name" class="form-control<?= $cls('name') ?>" name="name" type="text" maxlength="80" value="<?= e($row['name']) ?>"><?= $err('name') ?></div>
+    <div class="form-row"><label class="form-label" for="address">Address</label>
+      <input id="address" class="form-control<?= $cls('address') ?>" name="address" type="text" maxlength="120" value="<?= e($row['address']) ?>"><?= $err('address') ?></div>
+    <div class="form-row"><label class="form-label" for="rate">Rate per hour ($)</label>
+      <input id="rate" class="form-control<?= $cls('rate') ?>" name="rate" type="text" inputmode="decimal" value="<?= e($row['rate']) ?>"><?= $err('rate') ?></div>
+    <div class="row g-3">
+      <div class="form-row col-md-6"><label class="form-label" for="map_x">Map position – left (%)</label>
+        <input id="map_x" class="form-control<?= $cls('map_x') ?>" name="map_x" type="text" inputmode="numeric" value="<?= e($row['map_x']) ?>"><?= $err('map_x') ?></div>
+      <div class="form-row col-md-6"><label class="form-label" for="map_y">Map position – top (%)</label>
+        <input id="map_y" class="form-control<?= $cls('map_y') ?>" name="map_y" type="text" inputmode="numeric" value="<?= e($row['map_y']) ?>"><?= $err('map_y') ?></div>
     </div>
   </div>
-  <div class="actions"><a class="btn" href="locations.php">Cancel</a>
-    <button class="btn alt" type="submit"><?= $editing ? 'Save Changes' : 'Add Location' ?></button></div>
+  <div class="actions"><a class="btn btn-outline-secondary" href="locations.php">Cancel</a>
+    <button class="btn btn-primary" type="submit"><?= $editing ? 'Save Changes' : 'Add Location' ?></button></div>
 </form>
 <?php page_footer();

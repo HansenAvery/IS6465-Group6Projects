@@ -57,32 +57,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$err = fn(string $k) => isset($errors[$k]) ? '<div class="error" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
-$cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
+$err = fn(string $k) => isset($errors[$k]) ? '<div class="error invalid-feedback d-block" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
+$cls = fn(string $k) => isset($errors[$k]) ? ' is-invalid' : '';
 page_header($editing ? 'Update User' : 'Add User', 'users');
 ?>
 <h1><?= $editing ? 'Update User' : 'Add User' ?></h1>
 <p class="sub"><?= $editing ? 'Change the details below. Leave the password blank to keep the current one.' : 'Create a new user account' ?></p>
 <form method="post" action="user_form.php<?= $editing ? '?id=' . $id : '' ?>" novalidate>
   <?= csrf_field() ?>
-  <div class="panel">
-    <h2><?= $editing ? 'User Details' : 'New User' ?></h2>
-    <div class="form-row"><label class="field-label" for="name">Name</label>
-      <input id="name" name="name" type="text" maxlength="80" value="<?= e($row['name']) ?>"<?= $cls('name') ?>><?= $err('name') ?></div>
-    <div class="form-grid">
-      <div class="form-row"><label class="field-label" for="email">Email</label>
-        <input id="email" name="email" type="text" inputmode="email" maxlength="120" value="<?= e($row['email']) ?>"<?= $cls('email') ?>><?= $err('email') ?></div>
-      <div class="form-row"><label class="field-label" for="phone">Phone (optional)</label>
-        <input id="phone" name="phone" type="tel" maxlength="20" value="<?= e($row['phone']) ?>"<?= $cls('phone') ?>><?= $err('phone') ?></div>
+  <div class="card border-0 shadow-sm p-3 p-md-4">
+    <h2 class="card-title mb-3"><?= $editing ? 'User Details' : 'New User' ?></h2>
+    <div class="form-row"><label class="form-label" for="name">Name</label>
+      <input id="name" class="form-control<?= $cls('name') ?>" name="name" type="text" maxlength="80" value="<?= e($row['name']) ?>"><?= $err('name') ?></div>
+    <div class="row g-3">
+      <div class="form-row col-md-6"><label class="form-label" for="email">Email</label>
+        <input id="email" class="form-control<?= $cls('email') ?>" name="email" type="text" inputmode="email" maxlength="120" value="<?= e($row['email']) ?>"><?= $err('email') ?></div>
+      <div class="form-row col-md-6"><label class="form-label" for="phone">Phone (optional)</label>
+        <input id="phone" class="form-control<?= $cls('phone') ?>" name="phone" type="tel" maxlength="20" value="<?= e($row['phone']) ?>"><?= $err('phone') ?></div>
     </div>
-    <div class="form-grid">
-      <div class="form-row"><label class="field-label" for="password"><?= $editing ? 'New Password' : 'Password' ?></label>
-        <input id="password" name="password" type="password" autocomplete="new-password"<?= $cls('password') ?>><?= $err('password') ?></div>
-      <div class="form-row"><label class="field-label" for="password2">Confirm Password</label>
-        <input id="password2" name="password2" type="password" autocomplete="new-password"<?= $cls('password2') ?>><?= $err('password2') ?></div>
+    <div class="row g-3">
+      <div class="form-row col-md-6"><label class="form-label" for="password"><?= $editing ? 'New Password' : 'Password' ?></label>
+        <input id="password" class="form-control<?= $cls('password') ?>" name="password" type="password" autocomplete="new-password"><?= $err('password') ?></div>
+      <div class="form-row col-md-6"><label class="form-label" for="password2">Confirm Password</label>
+        <input id="password2" class="form-control<?= $cls('password2') ?>" name="password2" type="password" autocomplete="new-password"><?= $err('password2') ?></div>
     </div>
   </div>
-  <div class="actions"><a class="btn" href="users.php">Cancel</a>
-    <button class="btn alt" type="submit"><?= $editing ? 'Save Changes' : 'Add User' ?></button></div>
+  <div class="actions"><a class="btn btn-outline-secondary" href="users.php">Cancel</a>
+    <button class="btn btn-primary" type="submit"><?= $editing ? 'Save Changes' : 'Add User' ?></button></div>
 </form>
 <?php page_footer();

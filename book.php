@@ -37,40 +37,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 page_header('Reserve Your Parking Spot', 'find');
-$err = fn(string $k) => isset($errors[$k]) ? '<div class="error" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
-$cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
+$err = fn(string $k) => isset($errors[$k]) ? '<div class="error invalid-feedback d-block" role="alert">' . e($errors[$k]) . '</div>' : '<div class="error"></div>';
+$cls = fn(string $k) => isset($errors[$k]) ? ' is-invalid' : '';
 ?>
 <h1>Reserve Your Parking Spot</h1>
 <p class="sub">Select the time, date, and duration for your reservation</p>
 
 <form id="bookForm" method="post" action="book.php" novalidate>
   <?= csrf_field() ?>
-  <div class="panel">
-    <h2>Booking Details</h2>
+  <div class="card border-0 shadow-sm p-3 p-md-4">
+    <h2 class="card-title mb-3">Booking Details</h2>
     <div class="form-row">
-      <label class="field-label" for="bLoc">Select Parking Location</label>
-      <select id="bLoc" name="loc"<?= $cls('loc') ?>>
+      <label class="form-label" for="bLoc">Select Parking Location</label>
+      <select id="bLoc" class="form-select<?= $cls('loc') ?>" name="loc">
         <?php foreach (locations() as $id => $l): ?>
           <option value="<?= e($id) ?>"<?= (string)$d['loc'] === (string)$id ? ' selected' : '' ?>><?= e($l['name']) ?> — <?= money($l['rate']) ?>/hr</option>
         <?php endforeach; ?>
       </select>
       <?= $err('loc') ?>
     </div>
-    <div class="form-grid">
-      <div class="form-row">
-        <label class="field-label" for="bDate">Booking Date</label>
-        <input id="bDate" type="date" name="date" min="<?= date('Y-m-d') ?>" value="<?= e($d['date']) ?>"<?= $cls('date') ?>>
+    <div class="row g-3">
+      <div class="form-row col-md-6">
+        <label class="form-label" for="bDate">Booking Date</label>
+        <input id="bDate" class="form-control<?= $cls('date') ?>" type="date" name="date" min="<?= date('Y-m-d') ?>" value="<?= e($d['date']) ?>">
         <?= $err('date') ?>
       </div>
-      <div class="form-row">
-        <label class="field-label" for="bTime">Start Time</label>
-        <input id="bTime" type="time" name="time" value="<?= e($d['time']) ?>"<?= $cls('time') ?>>
+      <div class="form-row col-md-6">
+        <label class="form-label" for="bTime">Start Time</label>
+        <input id="bTime" class="form-control<?= $cls('time') ?>" type="time" name="time" value="<?= e($d['time']) ?>">
         <?= $err('time') ?>
       </div>
     </div>
     <div class="form-row">
-      <label class="field-label" for="bDur">Parking Duration</label>
-      <select id="bDur" name="duration"<?= $cls('duration') ?>>
+      <label class="form-label" for="bDur">Parking Duration</label>
+      <select id="bDur" class="form-select<?= $cls('duration') ?>" name="duration">
         <option value="">Select Duration</option>
         <?php foreach (DURATIONS as $v => $t): ?>
           <option value="<?= e($v) ?>"<?= (string)$d['duration'] === (string)$v ? ' selected' : '' ?>><?= e($t) ?></option>
@@ -80,8 +80,8 @@ $cls = fn(string $k) => isset($errors[$k]) ? ' class="invalid"' : '';
     </div>
   </div>
   <div class="actions">
-    <a class="btn" href="index.php">Cancel</a>
-    <button class="btn alt" type="submit">Proceed to Payment</button>
+    <a class="btn btn-outline-secondary" href="index.php">Cancel</a>
+    <button class="btn btn-primary" type="submit">Proceed to Payment</button>
   </div>
 </form>
 <?php page_footer();
