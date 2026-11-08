@@ -3,8 +3,8 @@ require __DIR__ . '/includes/functions.php';
 require_login();
 
 $d = $_SESSION['draft'] ?? null;
-if (!$d || empty($d['date']) || !isset(LOCATIONS[$d['loc']], DURATIONS[$d['duration']])) { redirect('index.php'); }
-$loc = LOCATIONS[$d['loc']];
+if (!$d || empty($d['date']) || !isset(locations()[$d['loc']], DURATIONS[$d['duration']])) { redirect('index.php'); }
+$loc = locations()[$d['loc']];
 $total = $loc['rate'] * (float)$d['duration'];
 
 $method = ($_POST['method'] ?? $_GET['method'] ?? 'card') === 'wallet' ? 'wallet' : 'card';

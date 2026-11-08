@@ -4,9 +4,9 @@ require_login();
 
 unset($_SESSION['draft']);                       // starting over from Find Parking
 $q = trim((string)($_GET['q'] ?? ''));
-$selected = isset($_GET['select'], LOCATIONS[$_GET['select']]) ? $_GET['select'] : null;
+$selected = isset($_GET['select']) && isset(locations()[$_GET['select']]) ? (int)$_GET['select'] : null;
 
-$results = array_filter(LOCATIONS, function (array $l) use ($q) {
+$results = array_filter(locations(), function (array $l) use ($q) {
     return $q === '' || stripos($l['name'] . ' ' . $l['address'], $q) !== false;
 });
 $count = count($results);
